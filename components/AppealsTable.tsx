@@ -151,7 +151,7 @@ export default function AppealsTable() {
     <>
       <div className="flex items-center space-x-4">
         <div className="flex flex-col pl-4">
-          <h1 className="text-xl font-semibold text-gray-900 py-3">
+          <h1 className="text-xl font-semibold text-gray-800 py-3">
             Appeal Letter
           </h1>
           <div className="h-1 bg-teal-500 w-full rounded-lg" />
@@ -174,7 +174,7 @@ export default function AppealsTable() {
                 placeholder="Search by Property, Jurisdiction, Parcel Number or Client"
                 value={searchTerm}
                 onChange={(e) => dispatch(setSearchTerm(e.target.value))}
-                className="w-full pl-10 pr-4 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-400 text-sm"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-btn-border-custom focus:border-transparent text-gray-400 text-sm"
               />
             </div>
 
@@ -199,7 +199,7 @@ export default function AppealsTable() {
                 onChange={(e) =>
                   setNewAppeal({ ...newAppeal, taxYear: e.target.value })
                 }
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
               <input
                 type="text"
@@ -208,7 +208,7 @@ export default function AppealsTable() {
                 onChange={(e) =>
                   setNewAppeal({ ...newAppeal, company: e.target.value })
                 }
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
               <input
                 type="text"
@@ -217,7 +217,7 @@ export default function AppealsTable() {
                 onChange={(e) =>
                   setNewAppeal({ ...newAppeal, state: e.target.value })
                 }
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
               <input
                 type="text"
@@ -226,7 +226,7 @@ export default function AppealsTable() {
                 onChange={(e) =>
                   setNewAppeal({ ...newAppeal, assessor: e.target.value })
                 }
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
               <input
                 type="text"
@@ -235,7 +235,7 @@ export default function AppealsTable() {
                 onChange={(e) =>
                   setNewAppeal({ ...newAppeal, account: e.target.value })
                 }
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
               <input
                 type="date"
@@ -244,13 +244,13 @@ export default function AppealsTable() {
                 onChange={(e) =>
                   setNewAppeal({ ...newAppeal, appealedDate: e.target.value })
                 }
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
               />
             </div>
             <div className="flex space-x-2 mt-4">
               <button
                 onClick={handleAdd}
-                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                className="px-4 py-2 btn-teal text-white rounded-lg hover:bg-teal-500 transition-colors"
               >
                 Add Appeal
               </button>
@@ -266,218 +266,210 @@ export default function AppealsTable() {
 
         <div className="bg-white overflow-x-auto">
           <table className="min-w-[768px] w-full">
-            <div className="px-2 ">
-              <thead className="bg-[#ECF3F9] border-b border-[#E2E6EF]">
-                <tr>
-                  <th className="px-6 py-4 text-left w-12 ">
+            <thead className="bg-[#ECF3F9] border-b border-[#E2E6EF]">
+              <tr>
+                <th className="px-6 py-4 text-left w-12 ">
+                  <input
+                    type="checkbox"
+                    checked={selectedAppeals.length === appeals.length}
+                    onChange={handleSelectAll}
+                    className="w-4 h-4 text-red-500 border-gray-300 rounded focus:ring-red-500"
+                  />
+                </th>
+                {[
+                  { key: "taxYear", label: "TAX YEAR" },
+                  { key: "company", label: "COMPANY" },
+                  { key: "state", label: "STATE" },
+                  { key: "assessor", label: "ASSESSOR" },
+                  { key: "account", label: "ACCOUNT NUMBER" },
+                  { key: "appealedDate", label: "APPEALED DATE" },
+                ].map((column) => (
+                  <th
+                    key={column.key}
+                    className="px-2 py-5 text-left text-xs text-gray-600 font-semibold uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                    onClick={() => handleSort(column.key)}
+                  >
+                    <div className="flex items-center space-x-1">
+                      <span>{column.label}</span>
+                      {sortConfig?.key === column.key &&
+                        (sortConfig.direction === "asc" ? (
+                          <ChevronUp className="w-4 h-4" />
+                        ) : (
+                          <ChevronDown className="w-4 h-4" />
+                        ))}
+                    </div>
+                  </th>
+                ))}
+                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider w-20">
+                  Actions
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {sortedAppeals.map((appeal) => (
+                <tr
+                  key={appeal.id}
+                  className={`hover:bg-gray-50 ${
+                    selectedAppeals.includes(appeal.id) ? "bg-gray-100" : ""
+                  }`}
+                >
+                  <td className="px-6 py-4 whitespace-nowrap">
                     <input
                       type="checkbox"
-                      checked={selectedAppeals.length === appeals.length}
-                      onChange={handleSelectAll}
+                      checked={selectedAppeals.includes(appeal.id)}
+                      onChange={() =>
+                        dispatch(toggleAppealSelection(appeal.id))
+                      }
                       className="w-4 h-4 text-red-500 border-gray-300 rounded focus:ring-red-500"
+                      style={{
+                        accentColor: selectedAppeals.includes(appeal.id)
+                          ? "#ef4444"
+                          : undefined,
+                      }}
                     />
-                  </th>
-                  {[
-                    { key: "taxYear", label: "TAX YEAR" },
-                    { key: "company", label: "COMPANY" },
-                    { key: "state", label: "STATE" },
-                    { key: "assessor", label: "ASSESSOR" },
-                    { key: "account", label: "ACCOUNT NUMBER" },
-                    { key: "appealedDate", label: "APPEALED DATE" },
-                  ].map((column) => (
-                    <th
-                      key={column.key}
-                      className="px-2 py-5 text-left text-xs text-gray-500 font-semibold uppercase tracking-wider cursor-pointer hover:bg-gray-100"
-                      onClick={() => handleSort(column.key)}
-                    >
-                      <div className="flex items-center space-x-1">
-                        <span>{column.label}</span>
-                        {sortConfig?.key === column.key &&
-                          (sortConfig.direction === "asc" ? (
-                            <ChevronUp className="w-4 h-4" />
-                          ) : (
-                            <ChevronDown className="w-4 h-4" />
-                          ))}
-                      </div>
-                    </th>
-                  ))}
-                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-20">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {sortedAppeals.map((appeal) => (
-                  <tr
-                    key={appeal.id}
-                    className={`hover:bg-gray-50 ${
-                      selectedAppeals.includes(appeal.id) ? "bg-gray-100" : ""
-                    }`}
-                  >
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <input
-                        type="checkbox"
-                        checked={selectedAppeals.includes(appeal.id)}
-                        onChange={() =>
-                          dispatch(toggleAppealSelection(appeal.id))
-                        }
-                        className="w-4 h-4 text-red-500 border-gray-300 rounded focus:ring-red-500"
-                        style={{
-                          accentColor: selectedAppeals.includes(appeal.id)
-                            ? "#ef4444"
-                            : undefined,
-                        }}
-                      />
-                    </td>
+                  </td>
+                  {editingId === appeal.id ? (
+                    <>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <input
+                          type="text"
+                          value={editForm?.taxYear || ""}
+                          onChange={(e) =>
+                            setEditForm((prev) =>
+                              prev ? { ...prev, taxYear: e.target.value } : null
+                            )
+                          }
+                          className="w-full px-2 py-1 border border-gray-300 rounded-lg"
+                        />
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <input
+                          type="text"
+                          value={editForm?.company || ""}
+                          onChange={(e) =>
+                            setEditForm((prev) =>
+                              prev ? { ...prev, company: e.target.value } : null
+                            )
+                          }
+                          className="w-full px-2 py-1 border border-gray-300 rounded-lg"
+                        />
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <input
+                          type="text"
+                          value={editForm?.state || ""}
+                          onChange={(e) =>
+                            setEditForm((prev) =>
+                              prev ? { ...prev, state: e.target.value } : null
+                            )
+                          }
+                          className="w-full px-2 py-1 border border-gray-300 rounded-lg"
+                        />
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <input
+                          type="text"
+                          value={editForm?.assessor || ""}
+                          onChange={(e) =>
+                            setEditForm((prev) =>
+                              prev
+                                ? { ...prev, assessor: e.target.value }
+                                : null
+                            )
+                          }
+                          className="w-full px-2 py-1 border border-gray-300 rounded-lg"
+                        />
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <input
+                          type="text"
+                          value={editForm?.account || ""}
+                          onChange={(e) =>
+                            setEditForm((prev) =>
+                              prev ? { ...prev, account: e.target.value } : null
+                            )
+                          }
+                          className="w-full px-2 py-1 border border-gray-300 rounded-lg"
+                        />
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <input
+                          type="date"
+                          value={editForm?.appealedDate || ""}
+                          onChange={(e) =>
+                            setEditForm((prev) =>
+                              prev
+                                ? { ...prev, appealedDate: e.target.value }
+                                : null
+                            )
+                          }
+                          className="w-full px-2 py-1 border border-gray-300 rounded-lg"
+                        />
+                      </td>
+                    </>
+                  ) : (
+                    <>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {appeal.taxYear}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {appeal.company}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {appeal.state}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {appeal.assessor}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {appeal.account}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {appeal.appealedDate}
+                      </td>
+                    </>
+                  )}
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     {editingId === appeal.id ? (
-                      <>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <input
-                            type="text"
-                            value={editForm?.taxYear || ""}
-                            onChange={(e) =>
-                              setEditForm((prev) =>
-                                prev
-                                  ? { ...prev, taxYear: e.target.value }
-                                  : null
-                              )
-                            }
-                            className="w-full px-2 py-1 border border-gray-300 rounded-lg"
-                          />
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <input
-                            type="text"
-                            value={editForm?.company || ""}
-                            onChange={(e) =>
-                              setEditForm((prev) =>
-                                prev
-                                  ? { ...prev, company: e.target.value }
-                                  : null
-                              )
-                            }
-                            className="w-full px-2 py-1 border border-gray-300 rounded-lg"
-                          />
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <input
-                            type="text"
-                            value={editForm?.state || ""}
-                            onChange={(e) =>
-                              setEditForm((prev) =>
-                                prev ? { ...prev, state: e.target.value } : null
-                              )
-                            }
-                            className="w-full px-2 py-1 border border-gray-300 rounded-lg"
-                          />
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <input
-                            type="text"
-                            value={editForm?.assessor || ""}
-                            onChange={(e) =>
-                              setEditForm((prev) =>
-                                prev
-                                  ? { ...prev, assessor: e.target.value }
-                                  : null
-                              )
-                            }
-                            className="w-full px-2 py-1 border border-gray-300 rounded-lg"
-                          />
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <input
-                            type="text"
-                            value={editForm?.account || ""}
-                            onChange={(e) =>
-                              setEditForm((prev) =>
-                                prev
-                                  ? { ...prev, account: e.target.value }
-                                  : null
-                              )
-                            }
-                            className="w-full px-2 py-1 border border-gray-300 rounded-lg"
-                          />
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <input
-                            type="date"
-                            value={editForm?.appealedDate || ""}
-                            onChange={(e) =>
-                              setEditForm((prev) =>
-                                prev
-                                  ? { ...prev, appealedDate: e.target.value }
-                                  : null
-                              )
-                            }
-                            className="w-full px-2 py-1 border border-gray-300 rounded-lg"
-                          />
-                        </td>
-                      </>
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={handleSave}
+                          className="text-green-600 hover:text-green-900 font-medium"
+                        >
+                          Save
+                        </button>
+                        <button
+                          onClick={() => setEditingId(null)}
+                          className="text-gray-600 hover:text-gray-900 font-medium"
+                        >
+                          Cancel
+                        </button>
+                      </div>
                     ) : (
-                      <>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                          {appeal.taxYear}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {appeal.company}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {appeal.state}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {appeal.assessor}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {appeal.account}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                          {appeal.appealedDate}
-                        </td>
-                      </>
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => handleEdit(appeal)}
+                          className="text-blue-600 hover:text-blue-900"
+                        >
+                          <Edit2 className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => dispatch(deleteAppeal(appeal.id))}
+                          className="text-red-600 hover:text-red-900"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
                     )}
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      {editingId === appeal.id ? (
-                        <div className="flex space-x-2">
-                          <button
-                            onClick={handleSave}
-                            className="text-green-600 hover:text-green-900 font-medium"
-                          >
-                            Save
-                          </button>
-                          <button
-                            onClick={() => setEditingId(null)}
-                            className="text-gray-600 hover:text-gray-900 font-medium"
-                          >
-                            Cancel
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="flex space-x-2">
-                          <button
-                            onClick={() => handleEdit(appeal)}
-                            className="text-blue-600 hover:text-blue-900"
-                          >
-                            <Edit2 className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={() => dispatch(deleteAppeal(appeal.id))}
-                            className="text-red-600 hover:text-red-900"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </div>
 
         <div className="bg-[#F8F9FB] px-4 py-3 border-t border-gray-200 w-full">
-          <div className="grid grid-cols-1 lg:grid-cols-3 items-center gap-y-3 lg:gap-y-0 text-xs">
+          <div className="grid grid-cols-1 lg:grid-cols-3 items-center gap-y-3 lg:gap-y-0 text-sm">
             <div className="text-gray-500 text-center lg:text-left">
               1–10 of 120
             </div>
@@ -517,7 +509,7 @@ export default function AppealsTable() {
           <div className="bg-white px-6 py-4 border-t border-gray-200">
             <button
               onClick={() => setShowAddForm(true)}
-              className="btn-teal text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors flex items-center space-x-2"
+              className="btn-teal text-white px-4 py-2 rounded-lg hover:bg-teal-500 transition-colors flex items-center space-x-2"
             >
               <Plus className="w-4 h-4" />
               <span>Add New Appeal</span>

@@ -53,7 +53,7 @@ export default function Sidebar({ activeView, setActiveView }: SidebarProps) {
   return (
     <div
       className={`sidebar-bg text-white transition-all duration-300 flex flex-col relative h-full rounded-xl ${
-        isCollapsed ? "w-16" : "w-52"
+        isCollapsed ? "w-16" : "w-60"
       }`}
     >
       <button
@@ -73,7 +73,7 @@ export default function Sidebar({ activeView, setActiveView }: SidebarProps) {
             <li key={item.href}>
               <a
                 href={item.href}
-                className="flex items-center py-3 px-3 text-sm transition-colors text-gray-300 hover:text-white hover:bg-gray-700 rounded-lg"
+                className="flex items-center py-3 px-3 text-sm font-semibold transition-colors text-white hover:text-white hover:bg-[#497092] rounded-lg"
               >
                 <item.icon className="w-5 h-5 flex-shrink-0" />
                 {!isCollapsed && <span className="ml-3">{item.label}</span>}
@@ -83,10 +83,10 @@ export default function Sidebar({ activeView, setActiveView }: SidebarProps) {
           <li>
             <button
               onClick={() => setActiveView("table")}
-              className={`flex items-center w-full py-3 px-3 text-sm rounded-lg transition-colors ${
+              className={`flex items-center w-full py-3 px-3 text-sm font-semibold rounded-lg transition-colors ${
                 activeView === "table"
-                  ? "bg-[#2C4E6C] text-white"
-                  : "text-gray-300 hover:text-white hover:bg-gray-700"
+                  ? "bg-[#497092] text-white"
+                  : " hover:text-white hover:bg-[#497092]"
               }`}
             >
               <Table className="w-5 h-5 flex-shrink-0" />
@@ -96,10 +96,10 @@ export default function Sidebar({ activeView, setActiveView }: SidebarProps) {
           <li>
             <button
               onClick={() => setActiveView("calendar")}
-              className={`flex items-center w-full py-3 px-3 text-sm rounded-lg transition-colors ${
+              className={`flex items-center w-full py-3 px-3 text-sm font-semibold rounded-lg transition-colors ${
                 activeView === "calendar"
-                  ? "bg-[#2C4E6C] text-white"
-                  : "text-gray-300 hover:text-white hover:bg-gray-700"
+                  ? "bg-[#497092] text-white"
+                  : " hover:text-white hover:bg-[#497092]"
               }`}
             >
               <CalendarIcon className="w-5 h-5 flex-shrink-0" />
